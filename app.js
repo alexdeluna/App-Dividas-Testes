@@ -47,41 +47,40 @@ document.addEventListener("DOMContentLoaded", () => {
   applySavedTheme();
   registerSW();
 
- observarSessao((user)=>{
+  observarSessao((user)=>{
 
-  window.firebaseUser = user;
-
-	state.db = defaultDB(); 
-
-  if(user){
-
-    mostrarUsuarioTopo(user);
-
-    carregarBancoUsuario(user.uid)
-      .then((dados) => {
-
-        state.db = dados;
-
-        recalculateProjection();
-        renderAll();
-        showScreen("menu");
-
-      })
-      .catch((erro) => {
-        console.error("Erro ao carregar banco:", erro);
-        alert("Erro ao carregar os dados do usuário.");
-      });
-
-  } else {
+    window.firebaseUser = user;
 
     state.db = defaultDB();
-    showScreen("login");
 
-  }
+    if(user){
 
-});
+      mostrarUsuarioTopo(user);
 
-	
+      carregarBancoUsuario(user.uid)
+        .then((dados) => {
+
+          state.db = dados || defaultDB();
+
+          recalculateProjection();
+          renderAll();
+          showScreen("menu");
+
+        })
+        .catch((erro) => {
+          console.error("Erro ao carregar banco:", erro);
+          alert("Erro ao carregar os dados do usuário.");
+        });
+
+    } else {
+
+      state.db = defaultDB();
+      showScreen("login");
+
+    }
+
+  });
+
 });
 
 function bindEvents() {

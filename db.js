@@ -24,19 +24,21 @@ export async function carregarBancoUsuario(uid) {
 
   const dados = snap.data();
 
-  return {
-    dividasFixas: Array.isArray(dados.dividasFixas) ? dados.dividasFixas : [],
-    cartoes: Array.isArray(dados.cartoes) ? dados.cartoes : [],
-    comprasCartao: Array.isArray(dados.comprasCartao) ? dados.comprasCartao : [],
-    rendas: Array.isArray(dados.rendas) ? dados.rendas : []
-  };
+return {
+  dividasFixas: Array.isArray(dados.dividasFixas) ? dados.dividasFixas : [],
+  cartoes: Array.isArray(dados.cartoes) ? dados.cartoes : [],
+  comprasCartao: Array.isArray(dados.comprasCartao) ? dados.comprasCartao : [],
+  rendas: Array.isArray(dados.rendas) ? dados.rendas : [],
+  pagamentos: Array.isArray(dados.pagamentos) ? dados.pagamentos : []
+};
 }
 
 export async function salvarBancoUsuario(uid, banco) {
   await setDoc(doc(db, "usuarios", uid), {
-    dividasFixas: banco.dividasFixas || [],
-    cartoes: banco.cartoes || [],
-    comprasCartao: banco.comprasCartao || [],
-    rendas: banco.rendas || []
-  });
+  dividasFixas: banco.dividasFixas || [],
+  cartoes: banco.cartoes || [],
+  comprasCartao: banco.comprasCartao || [],
+  rendas: banco.rendas || [],
+  pagamentos: banco.pagamentos || []
+});
 }

@@ -723,24 +723,37 @@ function renderHealthCard() {
 function renderMonthProjection() {
   const month = getCurrentMonthData();
 
+	const totalOriginal =
+    month.fixas.items.reduce((s,i)=>s+i.valorCentavos,0) +
+    month.cartoes.items.reduce((s,c)=>s+c.totalCentavos,0);
+
+  const pagoNoMes = totalOriginal - month.totalCentavos;
+
   byId("mesTitulo").textContent = month.label;
   byId("mesSubtitulo").textContent = `Mês ${state.monthIndex + 1} de ${PROJECAO_MESES}`;
   byId("totalMes").textContent = formatCurrency(month.totalCentavos);
 
   byId("painelResumoMes").innerHTML = `
-    <div class="summary-line">
-      <span>Dívidas fixas</span>
-      <strong>${formatCurrency(month.fixas.totalCentavos)}</strong>
-    </div>
-    <div class="summary-line">
-      <span>Cartões</span>
-      <strong>${formatCurrency(month.cartoes.totalCentavos)}</strong>
-    </div>
-    <div class="summary-line">
-      <span>Status</span>
-      <span class="projection-status ${month.status}">${month.statusText}</span>
-    </div>
-  `;
+  <div class="summary-line">
+    <span>Total de dívidas do mês</span>
+    <strong>${formatCurrency(totalOriginal)}</strong>
+  </div>
+
+  <div class="summary-line">
+    <span>Pago no mês</span>
+    <strong>${formatCurrency(pagoNoMes)}</strong>
+  </div>
+
+  <div class="summary-line">
+    <span>Falta pagar</span>
+    <strong>${formatCurrency(month.totalCentavos)}</strong>
+  </div>
+
+  <div class="summary-line">
+    <span>Status</span>
+    <span class="projection-status ${month.status}">${month.statusText}</span>
+  </div>
+`;
 
   renderCategorias(month);
 }

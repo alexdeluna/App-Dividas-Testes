@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Controle de Dívidas</title>
+  <meta name="theme-color" content="#0f172a">
+  <link rel="manifest" href="./manifest.json">
+  <link rel="stylesheet" href="./visual.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div>
+        <h1>Controle de Dívidas</h1>
+        <p class="subtitle">Planejamento financeiro com projeção de 36 meses</p>
+      </div>
+      <button id="btnTema" class="btn btn-ghost" type="button">🌙 Tema</button>
+		<button id="btnInstalar" class="btn hidden">
+📲 Instalar App
+</button>
+	  <div id="usuarioTopo" class="hidden">
+  <span id="emailUsuario"></span>
+  <button id="btnLogout" class="btn btn-danger btn-small">Logout</button>
+</div>
+    </header>
+
+    <main>
+	
+	<section id="screen-login" class="screen active">
+
+<div class="card">
+
+<h2>Login</h2>
+
+<label>Email</label>
+<input id="loginEmail" type="email">
+
+<label>Senha</label>
+<input id="loginSenha" type="password">
+
+<button id="btnLogin" class="btn btn-primary">
+Entrar
+</button>
+<button id="btnCriarConta" class="btn btn-secondary">
+Criar conta
+</button>
+
+<button id="btnResetSenha" class="btn btn-ghost">
+Esqueci minha senha
+</button>
+
+<button id="btnGoogle" class="btn btn-primary">
+Entrar com Google
+</button>
+	
+
+</div>
+
+</section>
+	
+      <!-- MENU -->
+      <section id="screen-menu" class="screen active">
+        <div class="card hero-card">
+          <h2>Menu principal</h2>
+          <p>Escolha uma opção.</p>
+          <div class="menu-actions">
+            <button id="btnIrInserir" class="btn btn-primary" type="button">Inserir dívida</button>
+            <button id="btnIrConsultar" class="btn btn-secondary" type="button">Consultar projeção</button>
+            <button id="btnIrSimular" class="btn btn-secondary" type="button">Simular dívida</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Como funciona</h3>
+          <p>Cadastre dívidas fixas, cartões, compras parceladas e rendas. O app calcula automaticamente a projeção dos próximos 36 meses.</p>
+        </div>
+      </section>
+
+      <!-- INSERIR -->
+      <section id="screen-inserir" class="screen">
+        <div class="screen-header">
+          <button class="btn btn-ghost" data-back="menu" type="button">← Voltar</button>
+          <h2>Inserir dívida</h2>
+        </div>
+
+        <div class="card">
+          <label for="tipoCadastro">Tipo de cadastro</label>
+          <select id="tipoCadastro">
+            <option value="fixa">Dívida fixa</option>
+            <option value="cartao">Cartão</option>
+            <option value="compra">Compra do cartão</option>
+          </select>
+        </div>
+
+        <form id="formFixa" class="card form-grid">
+          <h3>Dívida fixa</h3>
+
+          <label for="fixaNome">Nome da dívida</label>
+          <input id="fixaNome" type="text" maxlength="80" placeholder="Ex.: Carro">
+
+          <label for="fixaValor">Valor mensal</label>
+          <input id="fixaValor" class="money-input" type="text" inputmode="numeric" placeholder="R$ 0,00">
+
+          <label for="fixaParcelas">Parcelas restantes</label>
+          <input id="fixaParcelas" type="number" inputmode="numeric" min="1" max="999" placeholder="Ex.: 35">
+
+<label>Dia do vencimento</label>
+<input type="number" id="fixaVencimento" min="1" max="31" placeholder="Ex: 10">
+          
+          <div class="form-actions">
+            <button class="btn btn-primary" type="submit">Salvar dívida fixa</button>
+          </div>
+        </form>
+
+        <form id="formCartao" class="card form-grid hidden">
+          <h3>Cartão</h3>
+
+          <label for="cartaoNome">Nome do cartão</label>
+          <input id="cartaoNome" type="text" maxlength="80" placeholder="Ex.: Master01">
+
+          <label>Dia de vencimento do cartão</label>
+<input type="number" id="cartaoVencimento" min="1" max="31">
+
+          
+          <label for="cartaoAnuidade">Anuidade mensal</label>
+          <input id="cartaoAnuidade" class="money-input" type="text" inputmode="numeric" placeholder="R$ 0,00">
+
+          <div class="form-actions">
+            <button class="btn btn-primary" type="submit">Salvar cartão</button>
+          </div>
+        </form>
+
+        <form id="formCompra" class="card form-grid hidden">
+          <h3>Compra do cartão</h3>
+
+          <label for="compraCartaoId">Cartão</label>
+          <select id="compraCartaoId"></select>
+
+          <label for="compraNome">Nome da compra</label>
+          <input id="compraNome" type="text" maxlength="80" placeholder="Ex.: Armazém Bezerra">
+
+          <label for="compraValor">Valor da parcela</label>
+          <input id="compraValor" class="money-input" type="text" inputmode="numeric" placeholder="R$ 0,00">
+
+          <label for="compraParcelaAtual">Parcela atual</label>
+          <input id="compraParcelaAtual" type="number" inputmode="numeric" min="1" max="999" placeholder="Ex.: 3">
+
+          <label for="compraTotalParcelas">Total de parcelas</label>
+          <input id="compraTotalParcelas" type="number" inputmode="numeric" min="1" max="999" placeholder="Ex.: 10">
+
+          <div class="form-actions">
+            <button class="btn btn-primary" type="submit">Salvar compra</button>
+          </div>
+        </form>
+
+        <div class="card">
+          <h3>Registros cadastrados</h3>
+          <p class="muted">Edite ou exclua quando precisar.</p>
+          <div id="listaRegistros" class="stack"></div>
+        </div>
+      </section>
+
+      <!-- CONSULTAR -->
+      <section id="screen-consultar" class="screen">
+        <div class="screen-header">
+          <button class="btn btn-ghost" data-back="menu" type="button">← Voltar</button>
+          <h2>Consultar projeção</h2>
+        </div>
+
+        <div class="card">
+          <h3>Rendas do mês</h3>
+
+          <form id="formRenda" class="form-grid">
+            <label for="rendaNome">Nome da renda</label>
+            <input id="rendaNome" type="text" maxlength="80" placeholder="Ex.: Uber">
+
+            <label for="rendaValor">Valor</label>
+            <input id="rendaValor" class="money-input" type="text" inputmode="numeric" placeholder="R$ 0,00">
+
+            <div class="form-actions">
+              <button class="btn btn-primary" type="submit">Adicionar renda</button>
+            </div>
+          </form>
+
+          <div id="listaRendas" class="stack"></div>
+        </div>
+
+        <div id="cardSaudeFinanceira" class="card status-card">
+          <h3>Saúde financeira</h3>
+          <div class="summary-line"><span>Renda total</span><strong id="saudeRenda">R$ 0,00</strong></div>
+          <div class="summary-line"><span>Dívidas do mês</span><strong id="saudeDividas">R$ 0,00</strong></div>
+          <div class="summary-line"><span>Saldo</span><strong id="saudeSaldo">R$ 0,00</strong></div>
+          <div class="summary-line"><span>Comprometimento</span><strong id="saudeComprometimento">0%</strong></div>
+          <div id="saudeStatusTexto" class="status-text">Sem dados</div>
+        </div>
+
+        <div class="card month-nav-card">
+          <button id="btnMesAnterior" class="btn btn-ghost" type="button">◀</button>
+          <div class="month-nav-center">
+            <div id="mesTitulo" class="month-title"></div>
+            <div id="mesSubtitulo" class="muted"></div>
+          </div>
+          <button id="btnMesSeguinte" class="btn btn-ghost" type="button">▶</button>
+        </div>
+
+        <div class="card total-card">
+          <div class="muted">Total do mês</div>
+          <div id="totalMes" class="big-total">R$ 0,00</div>
+        </div>
+
+        <div class="card">
+          <div class="level-header">
+            <h3>Resumo do mês</h3>
+            <button id="btnToggleResumo36" class="btn btn-ghost btn-small" type="button">Ver 36 meses</button>
+          </div>
+
+          <div id="painelResumoMes"></div>
+
+          <div id="painelResumo36" class="hidden">
+            <div class="divider"></div>
+            <div id="listaResumo36" class="stack compact"></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Detalhamento por categoria</h3>
+          <div id="painelCategorias" class="stack"></div>
+        </div>
+
+        <div class="card">
+          <h3>Calendário de fim de dívidas</h3>
+          <div id="calendarioFimDividas" class="stack compact"></div>
+        </div>
+      </section>
+
+      <!-- SIMULAR -->
+      <section id="screen-simular" class="screen">
+        <div class="screen-header">
+          <button class="btn btn-ghost" data-back="menu" type="button">← Voltar</button>
+          <h2>Simular dívida</h2>
+        </div>
+
+        <form id="formSimulador" class="card form-grid">
+          <h3>Nova dívida simulada</h3>
+
+          <label for="simNome">Nome da dívida</label>
+          <input id="simNome" type="text" maxlength="80" placeholder="Ex.: Notebook">
+
+          <label for="simValor">Valor da parcela</label>
+          <input id="simValor" class="money-input" type="text" inputmode="numeric" placeholder="R$ 0,00">
+
+          <label for="simParcelas">Parcelas</label>
+          <input id="simParcelas" type="number" inputmode="numeric" min="1" max="999" placeholder="Ex.: 12">
+
+          <div class="form-actions">
+            <button class="btn btn-primary" type="submit">Simular</button>
+            <button id="btnLimparSimulacao" class="btn btn-secondary" type="button">Limpar</button>
+          </div>
+        </form>
+
+        <div class="card">
+          <h3>Resultado da simulação</h3>
+          <p class="muted">A simulação não altera os dados reais.</p>
+          <div id="resultadoSimulacao" class="stack"></div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+ <script type="module" src="./app.js"></script>
+</body>
+</html>

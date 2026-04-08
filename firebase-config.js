@@ -1,12 +1,12 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDfKJDXk6CWK0cMpgy-tYuJk8ZeiYcFp7Q",
-  authDomain: "dividas-95975.firebaseapp.com",
-  projectId: "dividas-95975",
-  storageBucket: "dividas-95975.firebasestorage.app",
-  messagingSenderId: "728287207280",
-  appId: "1:728287207280:web:00e5d1f83793c85cc0f9b5"
-};
+    apiKey: "AIzaSyB_XpfdjZWIx2PpUwLNGuRC233Wsh7fbRs",
+    authDomain: "appdividasteste.firebaseapp.com",
+    projectId: "appdividasteste",
+    storageBucket: "appdividasteste.firebasestorage.app",
+    messagingSenderId: "676814872029",
+    appId: "1:676814872029:web:962b7c65287ab96da96a34"
+  };
 
 export const app = initializeApp(firebaseConfig);

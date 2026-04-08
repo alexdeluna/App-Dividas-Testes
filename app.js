@@ -786,24 +786,47 @@ function createCategoryCard({ key, title, totalCentavos, itemsCount, detailRende
 }
 
 function renderFixasDetalhes(month) {
-  if (!month.fixas.items.length) return [emptyNode("Nenhuma dívida fixa ativa neste mês.")];
+
+  if (!month.fixas.items.length)
+    return [emptyNode("Nenhuma dívida fixa ativa neste mês.")];
 
   return month.fixas.items.map(item => {
+
     const div = document.createElement("div");
     div.className = "detail-card";
+
+    const pago = pagamentoJaRegistrado("fixa", item.id);
+
     div.innerHTML = `
-  <div class="row-between">
-    <div>
-      <div class="title">${escapeHtml(item.nome)}</div>
-      <div class="muted">
-        Vence dia ${item.dueDay || "-"} • ${item.parcelasRestantes} parcela(s) restantes
+      <div class="row-between">
+        <div>
+          <div class="title">${escapeHtml(item.nome)}</div>
+          <div class="muted">
+            Vence dia ${item.dueDay || "-"} • ${item.parcelasRestantes} parcela(s) restantes
+          </div>
+          <div class="muted">
+            ${pago ? "✓ Pago neste mês" : "Pendente"}
+          </div>
+        </div>
+        <div style="text-align:right">
+          <div><strong>${formatCurrency(item.valorCentavos)}</strong></div>
+          <button class="btn btn-small ${pago ? "btn-secondary" : "btn-primary"}">
+            ${pago ? "Desmarcar pagamento" : "Marcar como pago"}
+          </button>
+        </div>
       </div>
-    </div>
-    <strong>${formatCurrency(item.valorCentavos)}</strong>
-  </div>
-`;
+    `;
+
+    const btn = div.querySelector("button");
+
+    btn.addEventListener("click", () => {
+      marcarComoPago("fixa", item.id);
+    });
+
     return div;
+
   });
+
 }
 
 function renderCartoesDetalhes(month) {

@@ -575,14 +575,19 @@ function buildProjection(db) {
       cartoes: { totalCentavos: 0, items: [] }
     };
 
-   db.dividasFixas.forEach(divida => {
+db.dividasFixas.forEach(divida => {
 
   if (divida.parcelasRestantes > offset) {
+
+    const mesRef = getMonthKeyFromDate(ref);
 
     const pago = state.db.pagamentos.some(p =>
       p.tipo === "fixa" &&
       p.id === divida.id &&
-      p.mes === getMonthKey()
+      (
+        p.mesReferencia === mesRef ||
+        p.mes === mesRef
+      )
     );
 
     monthData.fixas.items.push({
@@ -592,7 +597,7 @@ function buildProjection(db) {
       pago
     });
 
-    if(!pago){
+    if (!pago) {
       monthData.fixas.totalCentavos += divida.valorCentavos;
       monthData.totalCentavos += divida.valorCentavos;
     }
@@ -1697,15 +1702,15 @@ function generateId(prefix) {
   return `${prefix}_${Date.now()}_${Math.random().toString(16).slice(2, 8)}`;
 }
 
-function getMonthKey(){
-
-  const month = getCurrentMonthData().date;
-
-  const y = month.getFullYear();
-  const m = String(month.getMonth()+1).padStart(2,"0");
-
+function getMonthKeyFromDate(date){
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, "0");
   return `${y}-${m}`;
+}
 
+function getMonthKey(){
+  const month = getCurrentMonthData().date;
+  return getMonthKeyFromDate(month);
 }
 
 function pagamentoJaRegistrado(tipo,id){

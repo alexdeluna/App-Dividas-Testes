@@ -1710,7 +1710,7 @@ function pagamentoJaRegistrado(tipo,id){
   return state.db.pagamentos.some(p =>
     p.tipo === tipo &&
     p.id === id &&
-    p.mes === mes
+    p.mesReferencia === mes
   );
 
 }
@@ -1719,11 +1719,11 @@ function marcarComoPago(tipo,id){
 
   const mes = getMonthKey();
 
-  const index = state.db.pagamentos.findIndex(p =>
-    p.tipo === tipo &&
-    p.id === id &&
-    p.mes === mes
-  );
+const index = state.db.pagamentos.findIndex(p =>
+  p.tipo === tipo &&
+  p.id === id &&
+  p.mesReferencia === mes
+);
 
   if(index >= 0){
 

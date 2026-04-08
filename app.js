@@ -1630,15 +1630,97 @@ function marcarComoPago(tipo,id){
 
   }else{
 
-    state.db.pagamentos.push({
-      tipo,
-      id,
-      mes
-    });
+   state.db.pagamentos.push({
+
+  tipo,
+  id,
+
+  nome: obterNomeDivida(tipo,id),
+
+  valor: obterValorDivida(tipo,id),
+
+  vencimento: obterVencimentoDivida(tipo,id),
+
+  mesReferencia: getMonthKey(),
+
+  mesPagamento: getMonthKey(),
+
+  dataPagamento: new Date().toISOString()
+
+});
 
   }
 
   saveAndRefresh();
+
+}
+
+function obterNomeDivida(tipo,id){
+
+  if(tipo==="fixa"){
+    const d = state.db.dividasFixas.find(d=>d.id===id);
+    return d ? d.nome : "";
+  }
+
+  if(tipo==="compra"){
+    for(const cartao of state.db.cartoes){
+      const c = cartao.compras.find(c=>c.id===id);
+      if(c) return c.nome;
+    }
+  }
+
+  if(tipo==="cartao"){
+    const c = state.db.cartoes.find(c=>c.id===id);
+    return c ? c.nome : "";
+  }
+
+  return "";
+
+}
+
+function obterValorDivida(tipo,id){
+
+  if(tipo==="fixa"){
+    const d = state.db.dividasFixas.find(d=>d.id===id);
+    return d ? d.valorCentavos : 0;
+  }
+
+  if(tipo==="compra"){
+    for(const cartao of state.db.cartoes){
+      const c = cartao.compras.find(c=>c.id===id);
+      if(c) return c.valorParcelaCentavos;
+    }
+  }
+
+  if(tipo==="cartao"){
+    const c = state.db.cartoes.find(c=>c.id===id);
+    return c ? c.anuidadeCentavos : 0;
+  }
+
+  return 0;
+
+}
+
+function obterVencimentoDivida(tipo,id){
+
+  if(tipo==="fixa"){
+    const d = state.db.dividasFixas.find(d=>d.id===id);
+    return d ? d.dueDay : 1;
+  }
+
+  if(tipo==="compra"){
+    for(const cartao of state.db.cartoes){
+      const c = cartao.compras.find(c=>c.id===id);
+      if(c) return c.dueDay || cartao.dueDay || 1;
+    }
+  }
+
+  if(tipo==="cartao"){
+    const c = state.db.cartoes.find(c=>c.id===id);
+    return c ? c.dueDay : 1;
+  }
+
+  return 1;
 
 }
 

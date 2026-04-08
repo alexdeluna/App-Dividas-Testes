@@ -272,7 +272,8 @@ function defaultDB() {
     dividasFixas: [],
     cartoes: [],
     comprasCartao: [],
-    rendas: []
+    rendas: [],
+	pagamentos: []
   };
 }
 
@@ -281,12 +282,12 @@ function loadDB() {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return defaultDB();
     const parsed = JSON.parse(raw);
-    return {
-      dividasFixas: Array.isArray(parsed.dividasFixas) ? parsed.dividasFixas : [],
-      cartoes: Array.isArray(parsed.cartoes) ? parsed.cartoes : [],
-      comprasCartao: Array.isArray(parsed.comprasCartao) ? parsed.comprasCartao : [],
-      rendas: Array.isArray(parsed.rendas) ? parsed.rendas : []
-    };
+    return { dividasFixas: Array.isArray(parsed.dividasFixas) ? parsed.dividasFixas : [],
+  cartoes: Array.isArray(parsed.cartoes) ? parsed.cartoes : [],
+  comprasCartao: Array.isArray(parsed.comprasCartao) ? parsed.comprasCartao : [],
+  rendas: Array.isArray(parsed.rendas) ? parsed.rendas : [],
+  pagamentos: Array.isArray(parsed.pagamentos) ? parsed.pagamentos : []
+	};
   } catch {
     return defaultDB();
   }

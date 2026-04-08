@@ -1458,6 +1458,57 @@ function generateId(prefix) {
   return `${prefix}_${Date.now()}_${Math.random().toString(16).slice(2, 8)}`;
 }
 
+function getMonthKey(){
+
+  const month = getCurrentMonthData().date;
+
+  const y = month.getFullYear();
+  const m = String(month.getMonth()+1).padStart(2,"0");
+
+  return `${y}-${m}`;
+
+}
+
+function pagamentoJaRegistrado(tipo,id){
+
+  const mes = getMonthKey();
+
+  return state.db.pagamentos.some(p =>
+    p.tipo === tipo &&
+    p.id === id &&
+    p.mes === mes
+  );
+
+}
+
+function marcarComoPago(tipo,id){
+
+  const mes = getMonthKey();
+
+  const index = state.db.pagamentos.findIndex(p =>
+    p.tipo === tipo &&
+    p.id === id &&
+    p.mes === mes
+  );
+
+  if(index >= 0){
+
+    state.db.pagamentos.splice(index,1);
+
+  }else{
+
+    state.db.pagamentos.push({
+      tipo,
+      id,
+      mes
+    });
+
+  }
+
+  saveAndRefresh();
+
+}
+
 function byId(id) {
   return document.getElementById(id);
 }

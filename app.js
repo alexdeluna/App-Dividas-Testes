@@ -936,11 +936,15 @@ function renderFixasDetalhes(month) {
             ${pago ? "✓ Pago neste mês" : "Pendente"}
           </div>
         </div>
+
         <div style="text-align:right">
+
           <div><strong>${formatCurrency(item.valorCentavos)}</strong></div>
+
           <button class="btn btn-small ${pago ? "btn-secondary" : "btn-primary"}">
-            ${pago ? "Desmarcar pagamento" : "Marcar como pago"}
+            ${pago ? "Desmarcar" : "Pagar"}
           </button>
+
         </div>
       </div>
     `;
@@ -949,6 +953,8 @@ function renderFixasDetalhes(month) {
 
     btn.addEventListener("click", () => {
       marcarComoPago("fixa", item.id);
+      recalculateProjection();
+      renderAll();
     });
 
     return div;

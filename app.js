@@ -670,6 +670,7 @@ function renderConsulta() {
   renderMonthProjection();
   renderResumo36();
   renderCalendarioFimDividas();
+  renderCalendarioVencimentosMes();
 }
 
 function renderRendas() {
@@ -1024,6 +1025,88 @@ function renderCalendarioFimDividas() {
     `;
     container.appendChild(div);
   });
+}
+
+function renderCalendarioVencimentosMes(){
+
+  const container = byId("calendarioVencimentosMes");
+  if(!container) return;
+
+  container.innerHTML = "";
+
+  const month = getCurrentMonthData();
+
+  const lista = [];
+
+  month.fixas.items.forEach(item => {
+
+    lista.push({
+      nome: item.nome,
+      dia: item.dueDay || 1,
+      valor: item.valorCentavos,
+      tipo: "Dívida fixa",
+      pago: pagamentoJaRegistrado("fixa", item.id)
+    });
+
+  });
+
+  month.cartoes.items.forEach(cartao => {
+
+    if(cartao.anuidadeCentavos > 0){
+
+      lista.push({
+        nome: cartao.nome + " (anuidade)",
+        dia: cartao.dueDay || 1,
+        valor: cartao.anuidadeCentavos,
+        tipo: "Cartão",
+        pago: pagamentoJaRegistrado("cartao", cartao.id)
+      });
+
+    }
+
+    cartao.compras.forEach(compra => {
+
+      lista.push({
+        nome: compra.nome,
+        dia: compra.dueDay || cartao.dueDay || 1,
+        valor: compra.valorParcelaCentavos,
+        tipo: "Parcela cartão",
+        pago: pagamentoJaRegistrado("compra", compra.id)
+      });
+
+    });
+
+  });
+
+  if(!lista.length){
+    container.appendChild(emptyNode("Nenhum vencimento neste mês."));
+    return;
+  }
+
+  lista.sort((a,b)=>a.dia-b.dia);
+
+  lista.forEach(item=>{
+
+    const div = document.createElement("div");
+    div.className = "timeline-item";
+
+    div.innerHTML = `
+      <div class="row-between">
+        <div>
+          <div class="title">${item.dia} • ${escapeHtml(item.nome)}</div>
+          <div class="muted">${item.tipo}</div>
+        </div>
+        <div style="text-align:right">
+          <div><strong>${formatCurrency(item.valor)}</strong></div>
+          <span class="tag">${item.pago ? "Pago" : "Pendente"}</span>
+        </div>
+      </div>
+    `;
+
+    container.appendChild(div);
+
+  });
+
 }
 
 function buildTimeline() {

@@ -68,6 +68,7 @@ Entrar com Google
             <button id="btnIrInserir" class="btn btn-primary" type="button">Inserir dívida</button>
             <button id="btnIrConsultar" class="btn btn-secondary" type="button">Consultar projeção</button>
             <button id="btnIrSimular" class="btn btn-secondary" type="button">Simular dívida</button>
+			  <button class="btn btn-secondary" data-nav="historico">Histórico de pagamentos</button>
           </div>
         </div>
 
@@ -270,6 +271,23 @@ Entrar com Google
           <div id="resultadoSimulacao" class="stack"></div>
         </div>
       </section>
+
+		<section id="screen-historico" class="screen hidden">
+
+  <div class="card">
+
+    <div class="row-between">
+      <h2>Histórico de pagamentos</h2>
+      <button class="btn btn-secondary" data-nav="menu">Voltar</button>
+    </div>
+
+    <div id="historicoPagamentos" class="stack"></div>
+
+  </div>
+
+</section>
+
+		
     </main>
   </div>
 

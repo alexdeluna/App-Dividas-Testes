@@ -342,6 +342,7 @@ function renderAll() {
   renderRegistros();
   renderConsulta();
   renderSimulation();
+  renderHistorico();
   updateCadastroForms();
   fillCartaoSelect();
 }
@@ -671,6 +672,92 @@ function renderConsulta() {
   renderResumo36();
   renderCalendarioFimDividas();
   renderCalendarioVencimentosMes();
+}
+
+function renderHistorico(){
+
+  const container = byId("historicoPagamentos");
+  if(!container) return;
+
+  container.innerHTML = "";
+
+  if(!state.db.pagamentos || !state.db.pagamentos.length){
+
+    container.appendChild(
+      emptyNode("Nenhum pagamento registrado.")
+    );
+
+    return;
+  }
+
+  const pagamentos = [...state.db.pagamentos];
+
+  pagamentos.sort((a,b)=>
+    new Date(b.dataPagamento) - new Date(a.dataPagamento)
+  );
+
+  const meses = {};
+
+  pagamentos.forEach(p => {
+
+    const data = new Date(p.dataPagamento);
+
+    const chave = `${data.getFullYear()}-${data.getMonth()+1}`;
+
+    if(!meses[chave]) meses[chave] = [];
+
+    meses[chave].push(p);
+
+  });
+
+  Object.keys(meses).forEach(chave => {
+
+    const [ano,mes] = chave.split("-");
+
+    const titulo = document.createElement("h3");
+
+    titulo.textContent = `${MONTH_NAMES[mes-1]} ${ano}`;
+
+    container.appendChild(titulo);
+
+    meses[chave].forEach(p => {
+
+      const data = new Date(p.dataPagamento);
+
+      const diaPagamento = data.getDate();
+
+      let status = "✓ Pago no prazo";
+
+      if(p.mesReferencia !== p.mesPagamento){
+        status = "⚠ Pago em mês diferente";
+      }else if(diaPagamento > p.vencimento){
+        status = "⚠ Pago com atraso";
+      }
+
+      const div = document.createElement("div");
+
+      div.className = "timeline-item";
+
+      div.innerHTML = `
+        <div class="row-between">
+          <div>
+            <div class="title">
+              ${p.vencimento} • ${escapeHtml(p.nome)}
+            </div>
+            <div class="muted">${status}</div>
+          </div>
+          <div>
+            <strong>${formatCurrency(p.valor)}</strong>
+          </div>
+        </div>
+      `;
+
+      container.appendChild(div);
+
+    });
+
+  });
+
 }
 
 function renderRendas() {

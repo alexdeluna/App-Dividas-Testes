@@ -561,17 +561,31 @@ function buildProjection(db) {
       cartoes: { totalCentavos: 0, items: [] }
     };
 
-    db.dividasFixas.forEach(divida => {
-      if (divida.parcelasRestantes > offset) {
-        monthData.fixas.items.push({
-  ...divida,
-  tipo: "fixa",
-  dueDay: divida.dueDay || 1
-});
-        monthData.fixas.totalCentavos += divida.valorCentavos;
-        monthData.totalCentavos += divida.valorCentavos;
-      }
+   db.dividasFixas.forEach(divida => {
+
+  if (divida.parcelasRestantes > offset) {
+
+    const pago = state.db.pagamentos.some(p =>
+      p.tipo === "fixa" &&
+      p.id === divida.id &&
+      p.mes === getMonthKey()
+    );
+
+    monthData.fixas.items.push({
+      ...divida,
+      tipo: "fixa",
+      dueDay: divida.dueDay || 1,
+      pago
     });
+
+    if(!pago){
+      monthData.fixas.totalCentavos += divida.valorCentavos;
+      monthData.totalCentavos += divida.valorCentavos;
+    }
+
+  }
+
+});
 
     db.cartoes.forEach(cartao => {
       const comprasAtivas = db.comprasCartao

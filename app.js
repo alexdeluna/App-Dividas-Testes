@@ -324,17 +324,31 @@ function updateThemeButtonText() {
    ========================================================= */
 function showScreen(screen) {
   state.screen = screen;
-  document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+
+  document.querySelectorAll(".screen").forEach(s =>
+    s.classList.remove("active")
+  );
+
   byId(`screen-${screen}`).classList.add("active");
 
   if (screen === "inserir") {
+
     renderRegistros();
     updateCadastroForms();
     fillCartaoSelect();
+
   } else if (screen === "consultar") {
+
     renderConsulta();
+
   } else if (screen === "simular") {
+
     renderSimulation();
+
+  } else if (screen === "historico") {
+
+    renderHistorico();
+
   }
 }
 

@@ -1,4 +1,4 @@
-const CACHE_NAME = "controle-dividas-v5";
+const CACHE_NAME = "controle-dividas-v6";
 const FILES_TO_CACHE = [
   "./",
   "./index.html",
@@ -8,6 +8,7 @@ const FILES_TO_CACHE = [
 ];
 
 self.addEventListener("install", (event) => {
+  self.skipWaiting();
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => cache.addAll(FILES_TO_CACHE))
   );
@@ -25,6 +26,14 @@ self.addEventListener("activate", (event) => {
     )
   );
   self.clients.claim();
+});
+
+self.addEventListener("activate", (event) => {
+
+  event.waitUntil(
+      clients.claim()
+  );
+
 });
 
 self.addEventListener("fetch", (event) => {

@@ -19,80 +19,281 @@
 		<button id="btnInstalar" class="btn hidden">
 📲 Instalar App
 </button>
-	  <div id="usuarioTopo" class="hidden">
-  <span id="emailUsuario"></span>
-  <button id="btnLogout" class="btn btn-danger btn-small">Logout</button>
-</div>
+<header class="topbar">
+
+  <div class="topbar-left">
+
+      <h1>Controle de Dívidas</h1>
+
+      <p class="subtitle">
+          Planejamento financeiro com projeção de 36 meses
+      </p>
+
+  </div>
+
+  <div class="topbar-right">
+
+      <button
+          id="btnTema"
+          class="btn btn-ghost"
+          type="button">
+          🌙 Tema
+      </button>
+
+      <button
+          id="btnInstalar"
+          class="btn hidden"
+          type="button">
+          📲 Instalar App
+      </button>
+
+      <div
+          id="usuarioTopo"
+          class="hidden">
+
+          <span id="emailUsuario"></span>
+
+          <button
+              id="btnLogout"
+              class="btn btn-danger btn-small"
+              type="button">
+              Logout
+          </button>
+
+      </div>
+
+  </div>
+
+</header>
     </header>
 
     <main>
 	
-	<section id="screen-login" class="screen active">
+      <section id="screen-login" class="screen active">
 
-<div class="card">
-
-<h2>Login</h2>
-
-<label>Email</label>
-<input id="loginEmail" type="email">
-
-<label>Senha</label>
-<input id="loginSenha" type="password">
-
-<button id="btnLogin" class="btn btn-primary">
-Entrar
-</button>
-<button id="btnCriarConta" class="btn btn-secondary">
-Criar conta
-</button>
-
-<button id="btnResetSenha" class="btn btn-ghost">
-Esqueci minha senha
-</button>
-
-<button id="btnGoogle" class="btn btn-primary">
-Entrar com Google
-</button>
-	
-
-</div>
-
-</section>
-	
+        <div class="card login-card">
+    
+            <div class="login-header">
+    
+                <h2>Bem-vindo</h2>
+    
+                <p class="login-subtitle">
+                    Acesse sua conta para visualizar e administrar suas dívidas.
+                </p>
+    
+            </div>
+    
+            <div class="login-form">
+    
+                <label for="loginEmail">E-mail</label>
+    
+                <input
+                    id="loginEmail"
+                    type="email"
+                    autocomplete="email">
+    
+                <label for="loginSenha">Senha</label>
+    
+                <input
+                    id="loginSenha"
+                    type="password"
+                    autocomplete="current-password">
+    
+            </div>
+    
+            <div class="login-actions">
+    
+                <button
+                    id="btnLogin"
+                    class="btn btn-primary"
+                    type="button">
+                    Entrar
+                </button>
+    
+                <button
+                    id="btnGoogle"
+                    class="btn btn-secondary"
+                    type="button">
+                    Entrar com Google
+                </button>
+    
+                <button
+                    id="btnCriarConta"
+                    class="btn btn-outline"
+                    type="button">
+                    Criar conta
+                </button>
+    
+                <button
+                    id="btnResetSenha"
+                    class="btn btn-ghost"
+                    type="button">
+                    Esqueci minha senha
+                </button>
+    
+            </div>
+    
+        </div>
+    
+    </section>	
       <!-- MENU -->
       <section id="screen-menu" class="screen active">
-        <div class="card hero-card">
-          <h2>Menu principal</h2>
-          <p>Escolha uma opção.</p>
-          <div class="menu-actions">
-            <button id="btnIrInserir" class="btn btn-primary" type="button">Inserir dívida</button>
-            <button id="btnIrConsultar" class="btn btn-secondary" type="button">Consultar projeção</button>
-            <button id="btnIrSimular" class="btn btn-secondary" type="button">Simular dívida</button>
-			  <button class="btn btn-secondary" data-nav="historico">Histórico de pagamentos</button>
-          </div>
-        </div>
 
-        <div class="card">
-          <h3>Como funciona</h3>
-          <p>Cadastre dívidas fixas, cartões, compras parceladas e rendas. O app calcula automaticamente a projeção dos próximos 36 meses.</p>
+        <div class="card hero-card">
+    
+            <h2>Painel Financeiro</h2>
+    
+            <p>
+                Selecione um módulo para gerenciar suas informações.
+            </p>
+    
         </div>
-      </section>
+    
+        <div class="dashboard-grid">
+    
+            <button
+                id="btnIrInserir"
+                class="dashboard-card"
+                type="button">
+    
+                <span class="dashboard-icon">➕</span>
+    
+                <span class="dashboard-title">
+                    Inserir Dívida
+                </span>
+    
+                <span class="dashboard-text">
+                    Cadastre novas despesas, cartões e rendas.
+                </span>
+    
+            </button>
+    
+            <button
+                id="btnIrConsultar"
+                class="dashboard-card"
+                type="button">
+    
+                <span class="dashboard-icon">📊</span>
+    
+                <span class="dashboard-title">
+                    Consultar Projeção
+                </span>
+    
+                <span class="dashboard-text">
+                    Visualize os próximos 36 meses.
+                </span>
+    
+            </button>
+    
+            <button
+                id="btnIrSimular"
+                class="dashboard-card"
+                type="button">
+    
+                <span class="dashboard-icon">🧮</span>
+    
+                <span class="dashboard-title">
+                    Simular Dívida
+                </span>
+    
+                <span class="dashboard-text">
+                    Faça simulações antes de assumir novos compromissos.
+                </span>
+    
+            </button>
+    
+            <button
+                class="dashboard-card"
+                data-nav="historico"
+                type="button">
+    
+                <span class="dashboard-icon">📜</span>
+    
+                <span class="dashboard-title">
+                    Histórico
+                </span>
+    
+                <span class="dashboard-text">
+                    Consulte pagamentos realizados e registros anteriores.
+                </span>
+    
+            </button>
+    
+        </div>
+    
+        <div class="card info-card">
+    
+            <h3>Resumo</h3>
+    
+            <p>
+                Todos os cálculos permanecem inalterados. Esta tela apenas organiza
+                os acessos em um formato mais intuitivo baseado em cards.
+            </p>
+    
+        </div>
+    
+    </section>
 
       <!-- INSERIR -->
       <section id="screen-inserir" class="screen">
         <div class="screen-header">
-          <button class="btn btn-ghost" data-back="menu" type="button">← Voltar</button>
-          <h2>Inserir dívida</h2>
-        </div>
 
-        <div class="card">
-          <label for="tipoCadastro">Tipo de cadastro</label>
-          <select id="tipoCadastro">
-            <option value="fixa">Dívida fixa</option>
-            <option value="cartao">Cartão</option>
-            <option value="compra">Compra do cartão</option>
-          </select>
+          <div>
+      
+              <h2>Inserir Registro</h2>
+      
+              <p class="screen-description">
+                  Cadastre uma dívida fixa, cartão ou compra parcelada.
+              </p>
+      
+          </div>
+      
+          <button
+              class="btn btn-ghost"
+              data-back="menu"
+              type="button">
+      
+              ← Voltar
+      
+          </button>
+      
+      </div>
+
+      <div class="card selector-card">
+
+        <div class="card-title">
+    
+            <h3>Tipo de Cadastro</h3>
+    
+            <span class="muted">
+                Escolha o tipo de informação que será cadastrada.
+            </span>
+    
         </div>
+    
+        <label for="tipoCadastro">
+    
+            Categoria
+    
+        </label>
+    
+        <select id="tipoCadastro">
+    
+            <option value="fixa">
+                Dívida fixa
+            </option>
+    
+            <option value="cartao">
+                Cartão
+            </option>
+    
+            <option value="compra">
+                Compra do cartão
+            </option>
+    
+        </select>
+    
+    </div>
 
         <form id="formFixa" class="card form-grid">
           <h3>Dívida fixa</h3>

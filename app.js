@@ -17,6 +17,7 @@ btnInstalar.classList.remove("hidden");
 
 });
 
+const APP_VERSION = "1.0.0";
 const STORAGE_KEY = "controle_dividas_v2";
 const THEME_KEY = "controle_dividas_tema_v2";
 const PROJECAO_MESES = 36;
@@ -45,6 +46,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   bindEvents();
   applySavedTheme();
+  const perfilVersao = byId("perfilVersao");
+
+if(perfilVersao){
+    perfilVersao.textContent = `Versão ${APP_VERSION}`;
+}
   registerSW();
 
   observarSessao((user)=>{
@@ -2130,9 +2136,21 @@ newWorker.addEventListener("statechange", () => {
 
 if (newWorker.state === "installed" && navigator.serviceWorker.controller) {
 
-console.log("Nova versão disponível.");
+  console.log("Nova versão disponível.");
 
-window.location.reload();
+  const atualizar = confirm(
+      "Uma nova versão do Controle de Dívidas está disponível.\n\nDeseja atualizar agora?"
+  );
+  
+  if (atualizar) {
+  
+      newWorker.postMessage({
+          type: "SKIP_WAITING"
+      });
+  
+  }
+
+//window.location.reload();
 
 }
 
@@ -2151,3 +2169,9 @@ console.error("Erro SW:", error);
 }
 
 }
+
+navigator.serviceWorker.addEventListener("controllerchange", () => {
+
+  window.location.reload();
+
+});

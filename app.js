@@ -84,28 +84,63 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function bindEvents() {
-	const btnLogin = byId("btnLogin");
 
-if(btnLogin){
-  btnLogin.addEventListener("click", async ()=>{
+  const btnLogin = byId("btnLogin");
 
-    const email = byId("loginEmail").value;
-    const senha = byId("loginSenha").value;
+  if (btnLogin) {
 
-    try{
+      btnLogin.addEventListener("click", async () => {
 
-      await login(email,senha);
+          const email = byId("loginEmail").value;
+          const senha = byId("loginSenha").value;
 
-    }catch(e){
+          try {
 
-      alert("Erro no login");
+              await login(email, senha);
 
-    }
+          } catch (e) {
 
-  });
-}
+              alert("Erro no login");
 
-const btnLogout = byId("btnLogout");
+          }
+
+      });
+
+  }
+
+  const btnPerfil = byId("btnPerfil");
+  const btnFecharPerfil = byId("btnFecharPerfil");
+  const perfilOverlay = byId("perfilOverlay");
+
+  if (btnPerfil && perfilOverlay) {
+
+      btnPerfil.addEventListener("click", () => {
+          perfilOverlay.classList.remove("hidden");
+      });
+
+  }
+
+  if (btnFecharPerfil && perfilOverlay) {
+
+      btnFecharPerfil.addEventListener("click", () => {
+          perfilOverlay.classList.add("hidden");
+      });
+
+  }
+
+  if (perfilOverlay) {
+
+      perfilOverlay.addEventListener("click", (e) => {
+
+          if (e.target === perfilOverlay) {
+              perfilOverlay.classList.add("hidden");
+          }
+
+      });
+
+  }
+
+  const btnLogout = byId("btnLogout");
 
 if(btnLogout){
   btnLogout.addEventListener("click", async ()=>{
@@ -140,7 +175,67 @@ await logout();
 });
 }
 	
-  byId("btnTema").addEventListener("click", toggleTheme);
+const btnTema = byId("btnTema");
+
+if (btnTema) {
+    btnTema.addEventListener("click", toggleTheme);
+}
+
+const btnTemaPerfil = byId("btnTemaPerfil");
+
+if(btnTemaPerfil){
+    btnTemaPerfil.addEventListener("click", toggleTheme);
+}
+
+const btnInstalarPerfil = byId("btnInstalarPerfil");
+
+if(btnInstalarPerfil){
+
+    btnInstalarPerfil.addEventListener("click", async ()=>{
+
+        if(!deferredPrompt) return;
+
+        deferredPrompt.prompt();
+
+        const { outcome } = await deferredPrompt.userChoice;
+
+        if(outcome === "accepted"){
+            console.log("App instalado");
+        }
+
+        deferredPrompt = null;
+
+    });
+
+}
+
+const btnLogoutPerfil = byId("btnLogoutPerfil");
+
+if(btnLogoutPerfil){
+
+    btnLogoutPerfil.addEventListener("click", async ()=>{
+
+        const confirmar = confirm("Deseja realmente sair da sua conta?");
+
+        if(!confirmar) return;
+
+        localStorage.removeItem(STORAGE_KEY);
+
+        const email = byId("loginEmail");
+        const senha = byId("loginSenha");
+
+        if(email) email.value = "";
+        if(senha) senha.value = "";
+
+        state.db = defaultDB();
+
+        perfilOverlay.classList.add("hidden");
+
+        await logout();
+
+    });
+
+}
   byId("btnIrInserir").addEventListener("click", () => showScreen("inserir"));
   byId("btnIrConsultar").addEventListener("click", () => showScreen("consultar"));
   byId("btnIrSimular").addEventListener("click", () => showScreen("simular"));
@@ -315,7 +410,16 @@ function toggleTheme() {
 }
 
 function updateThemeButtonText() {
-  byId("btnTema").textContent = document.body.classList.contains("dark") ? "☀ Tema" : "🌙 Tema";
+
+  const btnTema = byId("btnTema");
+
+  if (!btnTema) return;
+
+  btnTema.textContent =
+      document.body.classList.contains("dark")
+          ? "☀ Tema"
+          : "🌙 Tema";
+
 }
 
 /* =========================================================
@@ -1964,15 +2068,42 @@ function escapeAttribute(value) {
 
 function mostrarUsuarioTopo(user){
 
-  const topo = byId("usuarioTopo");
+  const emailUsuario = byId("emailUsuario");
+  const usuarioTopo = byId("usuarioTopo");
+  const perfilEmail = byId("perfilEmail");
+  const btnLogoutPerfil = byId("btnLogoutPerfil");
 
-  if(!user){
-    topo.classList.add("hidden");
-    return;
+  if(emailUsuario){
+      emailUsuario.textContent = user ? user.email : "";
   }
 
-  byId("emailUsuario").textContent = user.email;
-  topo.classList.remove("hidden");
+  if(usuarioTopo){
+      usuarioTopo.classList.toggle("hidden", !user);
+  }
+
+  if(perfilEmail){
+      perfilEmail.textContent = user ? user.email : "";
+  }
+
+  if(!user){
+
+    if(perfilEmail){
+        perfilEmail.textContent = "Nenhum usuário conectado";
+    }
+
+    if(btnLogoutPerfil){
+        btnLogoutPerfil.disabled = true;
+        btnLogoutPerfil.classList.add("disabled");
+    }
+
+}else{
+
+    if(btnLogoutPerfil){
+        btnLogoutPerfil.disabled = false;
+        btnLogoutPerfil.classList.remove("disabled");
+    }
+
+}
 
 }
 

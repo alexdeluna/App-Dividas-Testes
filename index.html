@@ -7,65 +7,34 @@
   <meta name="theme-color" content="#0f172a">
   <link rel="manifest" href="./manifest.json">
   <link rel="stylesheet" href="./visual.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
 <body>
   <div class="app-shell">
+   
     <header class="topbar">
-      <div>
-        <h1>Controle de Dívidas TESTES</h1>
-        <p class="subtitle">Planejamento financeiro com projeção de 36 meses</p>
+
+      <div class="topbar-left">
+  
+          <h1>Controle de Dívidas</h1>
+  
+          <p class="subtitle">
+              Planejamento financeiro com projeção de 36 meses
+          </p>
+  
       </div>
-      <button id="btnTema" class="btn btn-ghost" type="button">🌙 Tema</button>
-		<button id="btnInstalar" class="btn hidden">
-📲 Instalar App
-</button>
-<header class="topbar">
-
-  <div class="topbar-left">
-
-      <h1>Controle de Dívidas</h1>
-
-      <p class="subtitle">
-          Planejamento financeiro com projeção de 36 meses
-      </p>
-
-  </div>
-
-  <div class="topbar-right">
-
-      <button
-          id="btnTema"
-          class="btn btn-ghost"
-          type="button">
-          🌙 Tema
-      </button>
-
-      <button
-          id="btnInstalar"
-          class="btn hidden"
-          type="button">
-          📲 Instalar App
-      </button>
-
-      <div
-          id="usuarioTopo"
-          class="hidden">
-
-          <span id="emailUsuario"></span>
-
-          <button
-              id="btnLogout"
-              class="btn btn-danger btn-small"
-              type="button">
-              Logout
-          </button>
-
-      </div>
-
-  </div>
-
-</header>
-    </header>
+  
+      <div class="topbar-right">
+        <button
+            id="btnPerfil"
+            class="icon-button"
+            type="button"
+            title="Perfil">
+            <i class="bi bi-person-circle"></i>
+        </button>
+    </div>
+         
+  </header>
 
     <main>
 	
@@ -220,18 +189,7 @@
             </button>
     
         </div>
-    
-        <div class="card info-card">
-    
-            <h3>Resumo</h3>
-    
-            <p>
-                Todos os cálculos permanecem inalterados. Esta tela apenas organiza
-                os acessos em um formato mais intuitivo baseado em cards.
-            </p>
-    
-        </div>
-    
+              
     </section>
 
       <!-- INSERIR -->
@@ -491,6 +449,73 @@
 		
     </main>
   </div>
+
+  <div id="perfilOverlay" class="overlay hidden">
+
+    <div class="perfil-card">
+
+        <div class="perfil-header">
+            <h2>Perfil</h2>
+
+            <button
+                id="btnFecharPerfil"
+                class="icon-button"
+                type="button">
+                ✕
+            </button>
+        </div>
+
+        <div class="perfil-section">
+
+            <h3>Conta</h3>
+
+            <p id="perfilEmail"></p>
+
+        </div>
+
+        <div class="perfil-section">
+
+            <h3>Aparência</h3>
+
+            <button
+    id="btnTemaPerfil"
+    class="btn btn-secondary"
+    type="button">
+    <i class="bi bi-moon-stars"></i>
+    Alterar Tema
+</button>
+
+        </div>
+
+        <div class="perfil-section">
+
+            <h3>Aplicativo</h3>
+
+            <button
+    id="btnInstalarPerfil"
+    class="btn btn-secondary"
+    type="button">
+    <i class="bi bi-download"></i>
+    Instalar Aplicativo
+</button>
+
+        </div>
+
+        <div class="perfil-section">
+
+          <button
+          id="btnLogoutPerfil"
+          class="btn btn-danger"
+          type="button">
+          <i class="bi bi-box-arrow-right"></i>
+          Sair
+      </button>
+
+        </div>
+
+    </div>
+
+</div>
 
  <script type="module" src="./app.js"></script>
 </body>

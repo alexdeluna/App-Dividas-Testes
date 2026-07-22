@@ -463,6 +463,19 @@ select:hover{
   display: none !important;
 }
 
+.overlay{
+  position:fixed;
+  inset:0;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  background:rgba(0,0,0,.45);
+
+  z-index:9999;
+}
+
 .divider{
 
   height:1px;
@@ -906,5 +919,92 @@ html{
       justify-content:space-between;
 
   }
+
+}
+
+/* ==========================================================
+   PERFIL
+========================================================== */
+
+.perfil-card{
+
+  width:min(92vw,420px);
+
+  background:var(--surface);
+
+  color:var(--text);
+
+  border:1px solid var(--border);
+
+  border-radius:20px;
+
+  padding:24px;
+
+  box-shadow:0 24px 60px rgba(0,0,0,.28);
+
+}
+
+.perfil-header{
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:space-between;
+
+  margin-bottom:24px;
+
+}
+
+.perfil-header h2{
+
+  margin:0;
+
+}
+
+.perfil-section{
+
+  display:flex;
+
+  flex-direction:column;
+
+  gap:12px;
+
+  margin-top:20px;
+
+}
+
+.perfil-section:first-of-type{
+
+  margin-top:0;
+
+}
+
+.perfil-section h3{
+
+  margin:0;
+
+  font-size:1rem;
+
+}
+
+#perfilEmail{
+
+  margin:0;
+
+  color:var(--muted);
+
+  word-break:break-word;
+
+}
+
+.perfil-card .btn.disabled,
+.perfil-card .btn:disabled{
+
+    opacity:.45;
+
+    cursor:not-allowed;
+
+    pointer-events:none;
 
 }

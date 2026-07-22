@@ -814,8 +814,10 @@ function renderRendas() {
 }
 
 function renderHealthCard() {
+
   const month = getCurrentMonthData();
   const card = byId("cardSaudeFinanceira");
+
   card.classList.remove("status-green", "status-yellow", "status-red");
   card.classList.add(`status-${month.status}`);
 
@@ -824,6 +826,17 @@ function renderHealthCard() {
   byId("saudeSaldo").textContent = formatCurrency(month.saldoCentavos);
   byId("saudeComprometimento").textContent = formatPercent(month.comprometimento);
   byId("saudeStatusTexto").textContent = month.statusText;
+
+  card.setAttribute("data-status", month.status);
+
+  card.setAttribute(
+    "title",
+`${month.statusText}
+Renda: ${formatCurrency(month.rendaTotalCentavos)}
+Dívidas: ${formatCurrency(month.totalCentavos)}
+Saldo: ${formatCurrency(month.saldoCentavos)}`
+  );
+
 }
 
 function renderMonthProjection() {
@@ -840,25 +853,43 @@ function renderMonthProjection() {
   byId("totalMes").textContent = formatCurrency(month.totalCentavos);
 
   byId("painelResumoMes").innerHTML = `
-  <div class="summary-line">
-    <span>Total de dívidas do mês</span>
+
+<div class="summary-line">
+
+    <span>Total previsto</span>
+
     <strong>${formatCurrency(totalOriginal)}</strong>
-  </div>
 
-  <div class="summary-line">
-    <span>Pago no mês</span>
+</div>
+
+<div class="summary-line">
+
+    <span>Total pago</span>
+
     <strong>${formatCurrency(pagoNoMes)}</strong>
-  </div>
 
-  <div class="summary-line">
-    <span>Falta pagar</span>
+</div>
+
+<div class="summary-line">
+
+    <span>Saldo pendente</span>
+
     <strong>${formatCurrency(month.totalCentavos)}</strong>
-  </div>
 
-  <div class="summary-line">
-    <span>Status</span>
-    <span class="projection-status ${month.status}">${month.statusText}</span>
-  </div>
+</div>
+
+<div class="divider"></div>
+
+<div class="summary-line">
+
+    <span>Situação financeira</span>
+
+    <span class="projection-status ${month.status}">
+        ${month.statusText}
+    </span>
+
+</div>
+
 `;
 
   renderCategorias(month);
@@ -887,21 +918,47 @@ function renderCategorias(month) {
 
 function createCategoryCard({ key, title, totalCentavos, itemsCount, detailRenderer }) {
   const wrapper = document.createElement("div");
+  wrapper.dataset.category = key;
   wrapper.className = "category-card";
 
   const isExpanded = !!state.expandedCategories[key];
   wrapper.innerHTML = `
-    <div class="row-between">
-      <div>
-        <div class="title">${title}</div>
-        <div class="muted">${itemsCount} item(ns)</div>
-      </div>
-      <div style="text-align:right">
-        <div><strong>${formatCurrency(totalCentavos)}</strong></div>
-        <button class="btn btn-ghost btn-small" type="button">${isExpanded ? "Ocultar" : "Ver detalhes"}</button>
-      </div>
+
+<div class="row-between">
+
+    <div>
+
+        <div class="title">
+            ${title}
+        </div>
+
+        <div class="muted">
+            ${itemsCount} registro(s)
+        </div>
+
     </div>
-  `;
+
+    <div class="text-right">
+
+        <strong class="category-total">
+            ${formatCurrency(totalCentavos)}
+        </strong>
+
+        <br>
+
+        <button
+            class="btn btn-ghost btn-small"
+            type="button">
+
+            ${isExpanded ? "Ocultar detalhes" : "Ver detalhes"}
+
+        </button>
+
+    </div>
+
+</div>
+
+`;
 
   wrapper.querySelector("button").addEventListener("click", () => {
     state.expandedCategories[key] = !state.expandedCategories[key];
@@ -938,19 +995,28 @@ function renderFixasDetalhes(month) {
             Vence dia ${item.dueDay || "-"} • ${item.parcelasRestantes} parcela(s) restantes
           </div>
           <div class="muted">
-            ${pago ? "✓ Pago neste mês" : "Pendente"}
-          </div>
+
+    ${pago
+        ? "✓ Pagamento registrado"
+        : "Aguardando pagamento"}
+
+</div>
         </div>
 
-        <div style="text-align:right">
+        <div class="text-right">
 
-          <div><strong>${formatCurrency(item.valorCentavos)}</strong></div>
+    <div class="category-total">
+        <strong>${formatCurrency(item.valorCentavos)}</strong>
+    </div>
 
-          <button class="btn btn-small ${pago ? "btn-secondary" : "btn-primary"}">
-            ${pago ? "Desmarcar" : "Pagar"}
-          </button>
+    <button
+        class="btn btn-small ${pago ? "btn-secondary" : "btn-primary"}">
 
-        </div>
+        ${pago ? "Desmarcar" : "Pagar"}
+
+    </button>
+
+</div>
       </div>
     `;
 
@@ -984,8 +1050,10 @@ function renderCartoesDetalhes(month) {
             Vence dia ${cartao.dueDay || "-"} • ${cartao.compras.length} compra(s)
           </div>
         </div>
-        <div style="text-align:right">
-          <div><strong>${formatCurrency(cartao.totalCentavos)}</strong></div>
+        <div class="text-right">
+        <div class="category-total">
+        <strong>${formatCurrency(cartao.totalCentavos)}</strong>
+    </div>
           <button class="btn btn-ghost btn-small" type="button">${isExpanded ? "Ocultar" : "Ver parcelas"}</button>
         </div>
       </div>
@@ -1031,8 +1099,10 @@ function renderCartoesDetalhes(month) {
         ${compra.ignoradaNesteMes ? "Parcela ignorada neste mês" : "Parcela considerada neste mês"}
       </div>
     </div>
-    <div style="text-align:right">
-      <div><strong>${formatCurrency(compra.valorParcelaCentavos)}</strong></div>
+    <div class="text-right">
+    <div class="category-total">
+    <strong>${formatCurrency(compra.valorParcelaCentavos)}</strong>
+</div>
       <button class="btn btn-danger btn-small btn-toggle-parcela" type="button">
         ${compra.ignoradaNesteMes ? "Reativar parcela" : "Ignorar parcela"}
       </button>
@@ -1780,11 +1850,12 @@ function obterNomeDivida(tipo,id){
   }
 
   if(tipo==="compra"){
-    for(const cartao of state.db.cartoes){
-      const c = cartao.compras.find(c=>c.id===id);
-      if(c) return c.nome;
-    }
-  }
+
+    const compra = state.db.comprasCartao.find(c=>c.id===id);
+
+    return compra ? compra.nome : "";
+
+}
 
   if(tipo==="cartao"){
     const c = state.db.cartoes.find(c=>c.id===id);
@@ -1803,11 +1874,12 @@ function obterValorDivida(tipo,id){
   }
 
   if(tipo==="compra"){
-    for(const cartao of state.db.cartoes){
-      const c = cartao.compras.find(c=>c.id===id);
-      if(c) return c.valorParcelaCentavos;
-    }
-  }
+
+    const compra = state.db.comprasCartao.find(c=>c.id===id);
+
+    return compra ? compra.valorParcelaCentavos : 0;
+
+}
 
   if(tipo==="cartao"){
     const c = state.db.cartoes.find(c=>c.id===id);
@@ -1826,11 +1898,16 @@ function obterVencimentoDivida(tipo,id){
   }
 
   if(tipo==="compra"){
-    for(const cartao of state.db.cartoes){
-      const c = cartao.compras.find(c=>c.id===id);
-      if(c) return c.dueDay || cartao.dueDay || 1;
-    }
-  }
+
+    const compra = state.db.comprasCartao.find(c=>c.id===id);
+
+    if(!compra) return 1;
+
+    const cartao = state.db.cartoes.find(c=>c.id===compra.cartaoId);
+
+    return compra.dueDay || cartao?.dueDay || 1;
+
+}
 
   if(tipo==="cartao"){
     const c = state.db.cartoes.find(c=>c.id===id);
